@@ -1,0 +1,42 @@
+{
+    "name": "patcrypto/crypto-monitor",
+    "type": "library",
+    "description" : "Crypto currency monitor in PHP",
+    "keywords": ["monitor", "crypto", "currency"],
+    "license": "MIT",
+    "homepage" : "https://github.com/PayCrypto",
+    "authors": [
+        {
+            "name" : "Peter Lee",
+            "email" : "peter279k@gmail.com",
+            "homepage" : "https://github.com/peter279k/",
+            "role" : "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/PayCrypto/issues"
+    },
+    "require": {
+        "php" : ">=7.1",
+        "scriptfusion/porter": "^4",
+        "connectors/http": "^2",
+        "joomla/di": "^1"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "^6.5",
+        "mockery/mockery": "^1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PayCrypto\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PayCrypto\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "php vendor/bin/phpunit"
+    }
+}
