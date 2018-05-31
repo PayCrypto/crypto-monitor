@@ -38,17 +38,17 @@ class GetAllRate implements ProviderResource
         );
 
         $rates = $response['rates'];
-        $base = $response['asset_id_base'];
-        $quote = [];
-        $rate = [];
-        $time = [];
 
-        foreach($rates as $key => $value) {
-            $quote[] = $rates[$key]['asset_id_quote'];
-            $rate[] = $rates[$key]['rate'];
-            $time[] = $rates[$key]['time'];
-        }
+        $rate = function () use ($rates) {
+            foreach ($rates as $key => $value) {
+                yield [
+                    'asset_id_quote' => $rates[$key]['asset_id_quote'],
+                    'rate' => $rates[$key]['rate'],
+                    'time' => $rates[$key]['time'],
+                ];
+            }
+        };
 
-        return new AllRatesRecord($time, $base, $quote, $rate);
+        return new AllRatesRecord($rate(), $response['asset_id_base'], count($rates), $this);
     }
 }

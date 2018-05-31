@@ -21,10 +21,13 @@ final class GetRateTest extends TestCase
         $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetSpecificRate($this->apiKey)))
             ->findFirstCollection();
 
-        $this->assertSame('BTC', $rates->getBase());
-        $this->assertSame('USD', $rates->getQuote());
-        $this->assertLessThanOrEqual(time(), strtotime($rates->getTime()));
-        $this->assertInternalType('float', $rates->getRate());
+        $rateRecords = $rates->toAssociativeArray();
+
+        $this->assertCount(1, $rateRecords);
+        $this->assertArrayHasKey('asset_id_base', $rateRecords[0]);
+        $this->assertArrayHasKey('asset_id_quote', $rateRecords[0]);
+        $this->assertArrayHasKey('rate', $rateRecords[0]);
+        $this->assertArrayHasKey('time', $rateRecords[0]);
     }
 
     public function testGetAllRateRecords()
@@ -33,16 +36,12 @@ final class GetRateTest extends TestCase
         $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)))
             ->findFirstCollection();
 
-        $base = $rates->getBase();
-        $quote = $rates->getQuote();
-        $time = $rates->getTime();
-        $rate = $rates->getRate();
+        $this->assertSame('BTC', $rates->getBase());
 
-        $this->assertSame('BTC', $base);
-        $this->assertContains('USD', $quote);
-        $this->assertContains('GBP', $quote);
-        $this->assertContains('EUR', $quote);
-        $this->assertLessThanOrEqual(time(), strtotime($time[0]));
-        $this->assertInternalType('float', $rate[0]);
+        $rateRecords = $rates->toAssociativeArray();
+
+        $this->assertArrayHasKey('asset_id_quote', $rateRecords[0]);
+        $this->assertArrayHasKey('rate', $rateRecords[0]);
+        $this->assertArrayHasKey('time', $rateRecords[0]);
     }
 }

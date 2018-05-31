@@ -39,12 +39,15 @@ class GetSpecificRate implements ProviderResource
             true
         );
 
-        $base = $response['asset_id_base'];
+        $rate = function () use ($response) {
+            yield [
+                'asset_id_base' => $response['asset_id_base'],
+                'asset_id_quote' => $response['asset_id_quote'],
+                'rate' => $response['rate'],
+                'time' => $response['time'],
+            ];
+        };
 
-        $quote = $response['asset_id_quote'];
-        $rate = $response['rate'];
-        $time = $response['time'];
-
-        return new SpecificRateRecord($time, $base, $quote, $rate);
+        return new SpecificRateRecord($rate(), count($response), $this);
     }
 }

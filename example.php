@@ -24,17 +24,9 @@ $specificRate->quote = 'USD';
 $rates = $porter->import(new ImportSpecification($specificRate))
     ->findFirstCollection();
 
-echo $rates->getBase();
-echo PHP_EOL;
+$rateRecords = $rates->toAssociativeArray();
 
-echo $rates->getQuote();
-echo PHP_EOL;
-
-echo $rates->getTime();
-echo PHP_EOL;
-
-echo $rates->getRate();
-echo PHP_EOL;
+var_dump($rateRecords);
 
 // Get all rates
 
@@ -47,14 +39,8 @@ $specificRate->base = 'BTC';
 $rates = $porter->import(new ImportSpecification($specificRate))
     ->findFirstCollection();
 
-echo $rates->getBase(); // BTC
-echo PHP_EOL;
+$rateRecords = $rates->toAssociativeArray();
 
-var_dump($rates->getQuote()); // array
-echo PHP_EOL;
+echo $rates->getBase() . PHP_EOL;
 
-var_dump($rates->getTime()); // array
-echo PHP_EOL;
-
-var_dump($rates->getRate()); // rate
-echo PHP_EOL;
+var_dump($rateRecords);
