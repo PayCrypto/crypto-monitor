@@ -1,5 +1,7 @@
 # Crypto Monitor
 
+Monitor the crypto curreny via [CoinAPI](https://docs.coinapi.io/).
+
 [![Build Status](https://travis-ci.org/PayCrypto/crypto-monitor.svg?branch=master)](https://travis-ci.org/PayCrypto/crypto-monitor)
 
 - [Requirements](#Requirements)
