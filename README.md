@@ -1,0 +1,17 @@
+# Crypto Monitor
+
+[![Build Status](https://travis-ci.org/PayCrypto/crypto-monitor.svg?branch=master)](https://travis-ci.org/PayCrypto/crypto-monitor)
+
+- [Requirements](#Requirements)
+- [Installation](#Installation)
+- [Available Methods](#Available_Methods)
+- [Quick Start](#Quick_Start)
+- [Usage](#Usage)
+- [Tests](#Tests)
+- [TODO](#TODO)
+- [Contribute](#Contribute)
+- [Repository](#Repository)
+- [License](#License)
+- [Copyright](#Copyright)
+
+
