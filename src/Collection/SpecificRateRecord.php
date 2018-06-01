@@ -8,39 +8,16 @@ use ScriptFUSION\Porter\Provider\Resource\ProviderResource;
 
 class SpecificRateRecord extends CountableProviderRecords
 {
-    private $base;
-
-    private $time;
-
-    private $quote;
-
-    private $rate;
-
-    public function __construct(string $time, string $base, string $quote, float $rate)
-    {
-        $this->base = $base;
-        $this->time = $time;
-        $this->quote = $quote;
-        $this->rate = $rate;
+    public function __construct(
+        \Iterator $providerRecords,
+        int $count,
+        ProviderResource $resource
+    ) {
+        parent::__construct($providerRecords, $count, $resource);
     }
 
-    public function getBase(): string
+    public function toAssociativeArray(): array
     {
-        return $this->base;
-    }
-
-    public function getTime(): string
-    {
-        return $this->time;
-    }
-
-    public function getQuote(): string
-    {
-        return $this->quote;
-    }
-
-    public function getRate(): float
-    {
-        return $this->rate;
+        return iterator_to_array($this);
     }
 }

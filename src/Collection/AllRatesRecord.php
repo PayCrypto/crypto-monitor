@@ -10,18 +10,15 @@ class AllRatesRecord extends CountableProviderRecords
 {
     private $base;
 
-    private $time;
+    public function __construct(
+        \Iterator $providerRecords,
+        string $base,
+        int $count,
+        ProviderResource $resource
+    ) {
+        parent::__construct($providerRecords, $count, $resource);
 
-    private $quote;
-
-    private $rate;
-
-    public function __construct(array $time, string $base, array $quote, array $rate)
-    {
         $this->base = $base;
-        $this->time = $time;
-        $this->quote = $quote;
-        $this->rate = $rate;
     }
 
     public function getBase(): string
@@ -29,18 +26,8 @@ class AllRatesRecord extends CountableProviderRecords
         return $this->base;
     }
 
-    public function getTime(): array
+    public function toAssociativeArray(): array
     {
-        return $this->time;
-    }
-
-    public function getQuote(): array
-    {
-        return $this->quote;
-    }
-
-    public function getRate(): array
-    {
-        return $this->rate;
+        return iterator_to_array($this);
     }
 }
