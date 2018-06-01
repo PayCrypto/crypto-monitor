@@ -14,13 +14,15 @@ class GetSpecificRate implements ProviderResource
 {
     private $apiKey;
 
-    public $base = 'BTC';
+    private $base;
 
-    public $quote = 'USD';
+    private $quote;
 
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, string $base = 'BTC', string $quote = 'USD')
     {
         $this->apiKey = $apiKey;
+        $this->base = $base;
+        $this->quote = $quote;
     }
 
     public function getProviderClassName(): string
@@ -30,7 +32,7 @@ class GetSpecificRate implements ProviderResource
 
     public function fetch(ImportConnector $connector): \Iterator
     {
-        $response = \json_decode(
+        $response[] = \json_decode(
             (string) $connector->fetch(
                 CryptoMonitor::buildExchangeApiUrl(
                     sprintf("v1/exchangerate/%s/%s", $this->base, $this->quote)
@@ -39,15 +41,6 @@ class GetSpecificRate implements ProviderResource
             true
         );
 
-        $rate = function () use ($response) {
-            yield [
-                'asset_id_base' => $response['asset_id_base'],
-                'asset_id_quote' => $response['asset_id_quote'],
-                'rate' => $response['rate'],
-                'time' => $response['time'],
-            ];
-        };
-
-        return new SpecificRateRecord($rate(), count($response), $this);
+        return new \ArrayIterator($response);
     }
 }

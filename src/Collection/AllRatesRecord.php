@@ -25,9 +25,4 @@ class AllRatesRecord extends CountableProviderRecords
     {
         return $this->base;
     }
-
-    public function toAssociativeArray(): array
-    {
-        return iterator_to_array($this);
-    }
 }

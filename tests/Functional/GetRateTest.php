@@ -17,31 +17,35 @@ final class GetRateTest extends TestCase
 
     public function testGetSpecificRateRecords()
     {
-        /** @var SpecificRateRecord $rates */
-        $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetSpecificRate($this->apiKey)))
-            ->findFirstCollection();
+        /** @var \ArrayIterator $rates */
+        $rate = FixtureFactory::createPorter()->import(new ImportSpecification(new GetSpecificRate($this->apiKey)));
 
-        $rateRecords = $rates->toAssociativeArray();
+        $this->assertCount(1, $rate);
 
-        $this->assertCount(1, $rateRecords);
-        $this->assertArrayHasKey('asset_id_base', $rateRecords[0]);
-        $this->assertArrayHasKey('asset_id_quote', $rateRecords[0]);
-        $this->assertArrayHasKey('rate', $rateRecords[0]);
-        $this->assertArrayHasKey('time', $rateRecords[0]);
+        $rateRecords = iterator_to_array($rate);
+
+        foreach($rateRecords as $rateRecord) {
+            $this->assertArrayHasKey('asset_id_base', $rateRecord);
+            $this->assertArrayHasKey('asset_id_quote', $rateRecord);
+            $this->assertArrayHasKey('rate', $rateRecord);
+            $this->assertArrayHasKey('time', $rateRecord);
+        }
     }
 
     public function testGetAllRateRecords()
     {
         /** @var AllRatesRecord $rates */
-        $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)))
-            ->findFirstCollection();
+        $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)));
+
+        $rates = $rates->findFirstCollection();
+        $rateRecords = iterator_to_array($rates);
 
         $this->assertSame('BTC', $rates->getBase());
 
-        $rateRecords = $rates->toAssociativeArray();
-
-        $this->assertArrayHasKey('asset_id_quote', $rateRecords[0]);
-        $this->assertArrayHasKey('rate', $rateRecords[0]);
-        $this->assertArrayHasKey('time', $rateRecords[0]);
+        foreach ($rateRecords as $rateRecord) {
+            $this->assertArrayHasKey('asset_id_quote', $rateRecord);
+            $this->assertArrayHasKey('rate', $rateRecord);
+            $this->assertArrayHasKey('time', $rateRecord);
+        }
     }
 }

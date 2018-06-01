@@ -14,11 +14,12 @@ class GetAllRate implements ProviderResource
 {
     private $apiKey;
 
-    public $base = 'BTC';
+    private $base;
 
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, string $base = 'BTC')
     {
         $this->apiKey = $apiKey;
+        $this->base = $base;
     }
 
     public function getProviderClassName(): string
@@ -37,18 +38,8 @@ class GetAllRate implements ProviderResource
             true
         );
 
-        $rates = $response['rates'];
+        $rates = new \ArrayIterator($response['rates']);
 
-        $rate = function () use ($rates) {
-            foreach ($rates as $key => $value) {
-                yield [
-                    'asset_id_quote' => $rates[$key]['asset_id_quote'],
-                    'rate' => $rates[$key]['rate'],
-                    'time' => $rates[$key]['time'],
-                ];
-            }
-        };
-
-        return new AllRatesRecord($rate(), $response['asset_id_base'], count($rates), $this);
+        return new AllRatesRecord($rates, $this->base, count($response), $this);
     }
 }
