@@ -40,6 +40,6 @@ class GetAllRate implements ProviderResource
 
         $rates = new \ArrayIterator($response['rates']);
 
-        return new AllRatesRecord($rates, $this->base, count($response), $this);
+        return new AllRatesRecord($rates, $this->base, count($rates), $this);
     }
 }

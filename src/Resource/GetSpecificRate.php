@@ -41,6 +41,6 @@ class GetSpecificRate implements ProviderResource
             true
         );
 
-        return new \ArrayIterator($response);
+        return yield $response;
     }
 }

@@ -17,19 +17,14 @@ final class GetRateTest extends TestCase
 
     public function testGetSpecificRateRecords()
     {
-        /** @var \ArrayIterator $rates */
-        $rate = FixtureFactory::createPorter()->import(new ImportSpecification(new GetSpecificRate($this->apiKey)));
+        $rate = FixtureFactory::createPorter()->importOne(new ImportSpecification(new GetSpecificRate($this->apiKey)));
 
         $this->assertCount(1, $rate);
 
-        $rateRecords = iterator_to_array($rate);
-
-        foreach($rateRecords as $rateRecord) {
-            $this->assertArrayHasKey('asset_id_base', $rateRecord);
-            $this->assertArrayHasKey('asset_id_quote', $rateRecord);
-            $this->assertArrayHasKey('rate', $rateRecord);
-            $this->assertArrayHasKey('time', $rateRecord);
-        }
+        $this->assertArrayHasKey('asset_id_base', $rate[0]);
+        $this->assertArrayHasKey('asset_id_quote', $rate[0]);
+        $this->assertArrayHasKey('rate', $rate[0]);
+        $this->assertArrayHasKey('time', $rate[0]);
     }
 
     public function testGetAllRateRecords()
@@ -37,15 +32,15 @@ final class GetRateTest extends TestCase
         /** @var AllRatesRecord $rates */
         $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)));
 
-        $rates = $rates->findFirstCollection();
-        $rateRecords = iterator_to_array($rates);
+        $this->assertCount(1267, $rates);
 
-        $this->assertSame('BTC', $rates->getBase());
-
-        foreach ($rateRecords as $rateRecord) {
+        foreach ($rates as $rateRecord) {
             $this->assertArrayHasKey('asset_id_quote', $rateRecord);
             $this->assertArrayHasKey('rate', $rateRecord);
             $this->assertArrayHasKey('time', $rateRecord);
         }
+
+        $rates = $rates->findFirstCollection();
+        $this->assertSame('BTC', $rates->getBase());
     }
 }
