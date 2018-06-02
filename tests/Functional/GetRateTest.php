@@ -30,7 +30,7 @@ final class GetRateTest extends TestCase
         /** @var AllRatesRecord $rates */
         $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)));
 
-        $this->assertGreaterThan(1200, $rates);
+        $this->assertGreaterThan(1000, count($rates));
 
         foreach ($rates as $rateRecord) {
             $this->assertArrayHasKey('asset_id_quote', $rateRecord);
