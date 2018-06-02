@@ -19,12 +19,10 @@ final class GetRateTest extends TestCase
     {
         $rate = FixtureFactory::createPorter()->importOne(new ImportSpecification(new GetSpecificRate($this->apiKey)));
 
-        $this->assertCount(1, $rate);
-
-        $this->assertArrayHasKey('asset_id_base', $rate[0]);
-        $this->assertArrayHasKey('asset_id_quote', $rate[0]);
-        $this->assertArrayHasKey('rate', $rate[0]);
-        $this->assertArrayHasKey('time', $rate[0]);
+        $this->assertArrayHasKey('asset_id_base', $rate);
+        $this->assertArrayHasKey('asset_id_quote', $rate);
+        $this->assertArrayHasKey('rate', $rate);
+        $this->assertArrayHasKey('time', $rate);
     }
 
     public function testGetAllRateRecords()
@@ -32,7 +30,7 @@ final class GetRateTest extends TestCase
         /** @var AllRatesRecord $rates */
         $rates = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAllRate($this->apiKey)));
 
-        $this->assertCount(1267, $rates);
+        $this->assertGreaterThan(1200, $rates);
 
         foreach ($rates as $rateRecord) {
             $this->assertArrayHasKey('asset_id_quote', $rateRecord);

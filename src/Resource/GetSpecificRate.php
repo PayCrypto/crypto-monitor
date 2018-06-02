@@ -32,7 +32,7 @@ class GetSpecificRate implements ProviderResource
 
     public function fetch(ImportConnector $connector): \Iterator
     {
-        $response[] = \json_decode(
+        $response = \json_decode(
             (string) $connector->fetch(
                 CryptoMonitor::buildExchangeApiUrl(
                     sprintf("v1/exchangerate/%s/%s", $this->base, $this->quote)
@@ -41,6 +41,6 @@ class GetSpecificRate implements ProviderResource
             true
         );
 
-        return yield $response;
+        yield $response;
     }
 }
