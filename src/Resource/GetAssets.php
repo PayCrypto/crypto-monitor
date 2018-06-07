@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace PayCrypto\Resource;
 
 use PayCrypto\CryptoMonitor;
-use PayCrypto\Collection\AssetsRecord;
+use ScriptFUSION\Porter\Collection\CountableProviderRecords;
 use ScriptFUSION\Porter\Connector\ImportConnector;
 use ScriptFUSION\Porter\Provider\Patreon\Collection\PledgeRecords;
 use ScriptFUSION\Porter\Provider\Patreon\PatreonProvider;
