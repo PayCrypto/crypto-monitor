@@ -29,7 +29,7 @@ class GetExchanges implements ProviderResource
         $response = \json_decode(
             (string) $connector->fetch(
                 CryptoMonitor::buildExchangeApiUrl(
-                    "v1/exchanges"
+                    'v1/exchanges'
                 )
             ),
             true
@@ -37,6 +37,6 @@ class GetExchanges implements ProviderResource
 
         $exchanges = new \ArrayIterator($response);
 
-        return new ExchangesRecord($exchanges, count($exchanges), $this);
+        return new CountableProviderRecords($exchanges, count($exchanges), $this);
     }
 }

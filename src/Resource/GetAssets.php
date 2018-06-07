@@ -29,7 +29,7 @@ class GetAssets implements ProviderResource
         $response = \json_decode(
             (string) $connector->fetch(
                 CryptoMonitor::buildExchangeApiUrl(
-                    "v1/assets"
+                    'v1/assets'
                 )
             ),
             true
@@ -37,6 +37,6 @@ class GetAssets implements ProviderResource
 
         $assets = new \ArrayIterator($response);
 
-        return new AssetsRecord($assets, count($assets), $this);
+        return new CountableProviderRecords($assets, count($assets), $this);
     }
 }

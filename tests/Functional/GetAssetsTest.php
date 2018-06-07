@@ -10,11 +10,12 @@ use ScriptFUSION\Porter\Specification\ImportSpecification;
 
 final class GetAssetsTest extends TestCase
 {
-    /** @var $apiKey This is the Coin API Key for test environment*/
-    private $apiKey = '4E861687-19D6-4894-87B9-E785B1EE3900';
+    private $apiKey = '';
 
     public function testGetAssets()
     {
+        $this->apiKey = getenv('COIN_API_KEY');
+
         /** @var AssetsRecord */
         $assets = FixtureFactory::createPorter()->import(new ImportSpecification(new GetAssets($this->apiKey)));
 
