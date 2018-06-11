@@ -12,11 +12,12 @@ use ScriptFUSION\Porter\Specification\ImportSpecification;
 
 final class GetRateTest extends TestCase
 {
-    /** @var $apiKey This is the Coin API Key for test environment*/
-    private $apiKey = '4E861687-19D6-4894-87B9-E785B1EE3900';
+    private $apiKey = '';
 
     public function testGetSpecificRateRecords()
     {
+        $this->apiKey = getenv('COIN_API_KEY');
+
         $rate = FixtureFactory::createPorter()->importOne(new ImportSpecification(new GetSpecificRate($this->apiKey)));
 
         $this->assertArrayHasKey('asset_id_base', $rate);
