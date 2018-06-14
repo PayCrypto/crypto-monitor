@@ -8,39 +8,55 @@ use PayCrypto\CryptoMonitor;
 use PayCrypto\Connector\CryptoConnector;
 use PayCrypto\Resource\GetSpecificRate;
 use PayCrypto\Resource\GetAllRate;
+use PayCrypto\Resource\GetAssets;
 use ScriptFUSION\Porter\Specification\ImportSpecification;
 
 // Get specific rate
 
-$apiKey = '4E861687-19D6-4894-87B9-E785B1EE3900';
+$apiKey = 'your-coin-api-key';
 
 $container = new Container;
 $container->set(CryptoMonitor::class, new CryptoMonitor(new CryptoConnector($apiKey)));
 $porter = new Porter($container);
-$specificRate = new GetSpecificRate($apiKey);
-$specificRate->base = 'BTC';
-$specificRate->quote = 'USD';
+$specificRate = new GetSpecificRate($apiKey, 'BTC', 'USD');
 
-$rates = $porter->import(new ImportSpecification($specificRate))
-    ->findFirstCollection();
+$rates = $porter->importOne(new ImportSpecification($specificRate));
 
-$rateRecords = $rates->toAssociativeArray();
-
-var_dump($rateRecords);
+var_dump($rates);
 
 // Get all rates
 
 $container = new Container;
 $container->set(CryptoMonitor::class, new CryptoMonitor(new CryptoConnector($apiKey)));
 $porter = new Porter($container);
-$specificRate = new GetAllRate($apiKey);
-$specificRate->base = 'BTC';
+$specificRate = new GetAllRate($apiKey, 'BTC');
 
-$rates = $porter->import(new ImportSpecification($specificRate))
-    ->findFirstCollection();
+$rates = $porter->import(new ImportSpecification($specificRate));
 
-$rateRecords = $rates->toAssociativeArray();
+foreach ($rates as $rateRecord) {
+    echo $rateRecord['asset_id_quote'] . PHP_EOL;
+    echo $rateRecord['rate'] . PHP_EOL;
+    echo $rateRecord['time'] . PHP_EOL;
+}
 
-echo $rates->getBase() . PHP_EOL;
+// Get the base id
 
-var_dump($rateRecords);
+echo PHP_EOL;
+
+$rates = $rates->findFirstCollection();
+echo $rates->getBase(); //BTC
+
+// Get Assets
+
+$container = new Container;
+$container->set(CryptoMonitor::class, new CryptoMonitor(new CryptoConnector($apiKey)));
+$porter = new Porter($container);
+$assets = new GetAssets($apiKey);
+
+$assets = $porter->import(new ImportSpecification($assets));
+
+foreach ($assets as $assetRecord) {
+    var_dump($assetRecord['asset_id']);
+    var_dump($assetRecord['name']);
+    var_dump($assetRecord['type_is_crypto']);
+}
