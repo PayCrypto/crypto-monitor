@@ -7,11 +7,11 @@ Monitor the crypto curreny via [CoinAPI](https://docs.coinapi.io/).
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Available Methods](#available_methods)
+- [Available Methods](#availablemethods)
 - [Quick Start](#quickstart)
 - [Usage](#usage)
 - [Tests](#tests)
-- [TODO](#tODO)
+- [TODO](#todo)
 - [Contribute](#contribute)
 - [Repository](#repository)
 - [License](#license)
