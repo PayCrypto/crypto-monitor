@@ -17,4 +17,3 @@ Monitor the crypto curreny via [CoinAPI](https://docs.coinapi.io/).
 - [License](#License)
 - [Copyright](#Copyright)
 
-

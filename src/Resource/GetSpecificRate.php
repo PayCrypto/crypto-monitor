@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayCrypto\Resource;
 
+use PayCrypto\PayCrypto;
 use PayCrypto\CryptoMonitor;
 use PayCrypto\Collection\SpecificRateRecord;
 use ScriptFUSION\Porter\Connector\ImportConnector;
@@ -12,17 +13,11 @@ use ScriptFUSION\Porter\Provider\Resource\ProviderResource;
 
 class GetSpecificRate implements ProviderResource
 {
-    private $apiKey;
+    public $config;
 
-    private $base;
-
-    private $quote;
-
-    public function __construct(string $apiKey, string $base = 'BTC', string $quote = 'USD')
+    public function __construct(PayCrypto $config)
     {
-        $this->apiKey = $apiKey;
-        $this->base = $base;
-        $this->quote = $quote;
+        $this->config = $config;
     }
 
     public function getProviderClassName(): string
@@ -32,15 +27,10 @@ class GetSpecificRate implements ProviderResource
 
     public function fetch(ImportConnector $connector): \Iterator
     {
-        $response = \json_decode(
-            (string) $connector->fetch(
-                CryptoMonitor::buildExchangeApiUrl(
-                    sprintf("v1/exchangerate/%s/%s", $this->base, $this->quote)
-                )
-            ),
-            true
+        $json = (string) $connector->fetch(
+            CryptoMonitor::buildExchangeApiUrl($this->config)
         );
 
-        yield $response;
+        yield json_decode($json, true);
     }
 }

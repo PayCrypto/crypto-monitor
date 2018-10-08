@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayCrypto\Resource;
 
+use PayCrypto\PayCrypto;
 use PayCrypto\CryptoMonitor;
 use ScriptFUSION\Porter\Collection\CountableProviderRecords;
 use ScriptFUSION\Porter\Connector\ImportConnector;
@@ -12,11 +13,11 @@ use ScriptFUSION\Porter\Provider\Resource\ProviderResource;
 
 class GetAssets implements ProviderResource
 {
-    private $apiKey;
+    public $config;
 
-    public function __construct(string $apiKey)
+    public function __construct(PayCrypto $config)
     {
-        $this->apiKey = $apiKey;
+        $this->config = $config;
     }
 
     public function getProviderClassName(): string
@@ -26,16 +27,13 @@ class GetAssets implements ProviderResource
 
     public function fetch(ImportConnector $connector): \Iterator
     {
-        $response = \json_decode(
-            (string) $connector->fetch(
-                CryptoMonitor::buildExchangeApiUrl(
-                    'v1/assets'
-                )
-            ),
-            true
+        $response = (string) $connector->fetch(
+            CryptoMonitor::buildExchangeApiUrl($this->config)
         );
 
-        $assets = new \ArrayIterator($response);
+        $data = json_decode($response, true);
+
+        $assets = new \ArrayIterator($data);
 
         return new CountableProviderRecords($assets, count($assets), $this);
     }
